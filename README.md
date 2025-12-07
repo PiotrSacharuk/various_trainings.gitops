@@ -1,0 +1,1 @@
+# various-trainings.gitops
