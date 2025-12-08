@@ -1,7 +1,10 @@
 replicaCount: 1
 
+imagePullSecrets:
+  - name: ghcr-secret
+
 image:
-  repository: order-flow
+  repository: ghcr.io/piotrsacharuk/order-flow
   pullPolicy: IfNotPresent
   tag: "latest"
 
