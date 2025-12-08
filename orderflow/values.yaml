@@ -21,4 +21,4 @@ resources:
     memory: 256Mi
 
 env:
-  ENVIRONMENT: canary-test-v2
+  ENVIRONMENT: canary-test-v3
