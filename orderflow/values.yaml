@@ -29,7 +29,8 @@ ingress:
   className: traefik
   host: orderflow.k3d.local
   annotations:
-    cert-manager.io/cluster-issuer: selfsigned-issuer
+    cert-manager.io/cluster-issuer: ca-issuer
+    cert-manager.io/common-name: orderflow.k3d.local
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
   tls:
     enabled: true
