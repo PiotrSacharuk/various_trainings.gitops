@@ -9,8 +9,9 @@ image:
   tag: "latest"
 
 service:
+  name: orderflow
   type: ClusterIP
-  port: 80
+  port: 5000
   targetPort: 5000
 
 resources:
@@ -35,3 +36,6 @@ ingress:
   tls:
     enabled: true
     secretName: orderflow-tls
+
+monitoring:
+  enabled: true
