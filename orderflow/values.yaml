@@ -11,6 +11,7 @@ image:
 service:
   type: ClusterIP
   port: 80
+  targetPort: 5000
 
 resources:
   requests:
@@ -22,3 +23,14 @@ resources:
 
 env:
   ENVIRONMENT: canary-test-v4
+
+ingress:
+  enabled: true
+  className: traefik
+  host: orderflow.k3d.local
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+  tls:
+    enabled: true
+    secretName: orderflow-tls
