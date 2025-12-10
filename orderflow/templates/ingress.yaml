@@ -13,10 +13,12 @@ spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
+  {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
-      - {{ .Values.ingress.host }}
+        - {{ .Values.ingress.host }}
       secretName: {{ .Values.ingress.tls.secretName }}
+  {{- end }}
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -27,5 +29,5 @@ spec:
               service:
                 name: {{ .Release.Name }}-orderflow
                 port:
-                  number: {{ .Values.service.port }}
+                  number: 80
 {{- end }}
