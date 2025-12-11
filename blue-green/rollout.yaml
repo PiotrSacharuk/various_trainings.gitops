@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Release.Name }}-orderflow
+  labels:
+    app: orderflow
+spec:
+  selector:
+    matchLabels:
+      app: orderflow
+  strategy:
+    blueGreen:  # ← Change "canary" to "blueGreen"
+      activeService: orderflow  # ← Service name (points to BLUE/GREEN)
+      previewService: orderflow-preview  # ← For testing GREEN
+      prePromotionAnalysis:  # ← Optional: run tests on GREEN
+        templates:
+        - templateName: smoke-tests
+      autoPromotionEnabled: false  # ← Manual approval (click "Promote")
+      autoPromotionSeconds: 30  # ← Or auto after 30s
+  template:
+    metadata:
+      labels:
+        app: orderflow
+    spec:
+      containers:
+        - name: orderflow
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      imagePullSecrets:
+        - name: ghcr-secret

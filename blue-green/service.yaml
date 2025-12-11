@@ -1,0 +1,25 @@
+---
+# Current service (points to BLUE/GREEN)
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderflow
+spec:
+  selector:
+    app: orderflow
+  ports:
+  - port: 5000
+    targetPort: 5000
+
+---
+# Preview service (for testing GREEN)
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderflow-preview
+spec:
+  selector:
+    app: orderflow
+  ports:
+  - port: 5000
+    targetPort: 5000

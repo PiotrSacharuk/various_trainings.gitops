@@ -1,5 +1,7 @@
 # various-trainings.gitops
 
+nohup kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+
 follow https://github.com/PiotrSacharuk/ArgoCD scripts for argocd setup
 
 kubectl create secret docker-registry ghcr-secret \
