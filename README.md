@@ -46,27 +46,27 @@ helm install prometheus prometheus-community/prometheus \
   --namespace monitoring \
   --create-namespace
 
-helm install prometheus prometheus-community/kube-prometheus-stack \
+helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace \
-  --values - <<EOF
-prometheus:
-  prometheusSpec:
-    retention: 7d
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 5Gi
+  -f monitoring/prometheus-values.yaml \
+  --set grafana.adminPassword=<set your password here>
 
-grafana:
-  adminPassword: "admin123"
-  persistence:
-    enabled: true
-    size: 5Gi
+# GRAFANA LOKI + Promtail
+sudo sysctl -w fs.inotify.max_user_watches=524288
+sudo sysctl -w fs.inotify.max_user_instances=8192
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
 
-alertmanager:
-  enabled: true
-EOF
+helm upgrade --install loki grafana/loki-stack \
+  -n monitoring \
+  --set loki.enabled=true \
+  -f monitoring/promtail-values.yaml
+
+# ACCESS
+
+# Prometheus (http://localhost:9090)
+nohup kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n monitoring &
+
+# Grafana (http://localhost:3000) - login: admin / <your-password>
+nohup kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring &

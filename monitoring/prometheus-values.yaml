@@ -1,0 +1,22 @@
+prometheus:
+  prometheusSpec:
+    retention: 7d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+
+grafana:
+  persistence:
+    enabled: false
+  sidecar:
+    datasources:
+      alertmanager:
+        enabled: false
+
+alertmanager:
+  enabled: false
+
