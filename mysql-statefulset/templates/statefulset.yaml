@@ -46,11 +46,11 @@ spec:
 
           resources:
             requests:
-              memory: {{ .Values.mysql.resources.requests.memory | quote }}
-              cpu: {{ .Values.mysql.resources.requests.cpu | quote }}
+              memory: {{ .Values.resources.requests.memory | quote }}
+              cpu: {{ .Values.resources.requests.cpu | quote }}
             limits:
-              memory: {{ .Values.mysql.resources.limits.memory | quote }}
-              cpu: {{ .Values.mysql.resources.limits.cpu | quote }}
+              memory: {{ .Values.resources.limits.memory | quote }}
+              cpu: {{ .Values.resources.limits.cpu | quote }}
 
           livenessProbe:
             exec:
