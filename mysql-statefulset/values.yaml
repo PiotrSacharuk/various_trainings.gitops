@@ -12,7 +12,7 @@ mysql:
 
 storage:
   size: 1Gi
-  storageClassName: standard
+  storageClassName: local-path
 
 service:
   type: ClusterIP
