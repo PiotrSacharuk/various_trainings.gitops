@@ -5,10 +5,10 @@ mysql:
 
   replicas: 3
 
-  root-password: ""
+  rootPassword: "set-root-password"
   database: "myapp_db"
-  username: ""
-  password: ""
+  username: "set-username"
+  password: "set-password"
 
 storage:
   size: 1Gi
