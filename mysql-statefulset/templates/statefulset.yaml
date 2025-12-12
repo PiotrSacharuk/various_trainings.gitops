@@ -41,8 +41,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/mysql
-            - name: config
-              mountPath: /etc/mysql/conf.d
 
           resources:
             requests:
@@ -85,11 +83,6 @@ spec:
             tolerations:
               {{ toYaml .Values.tolerations | nindent 8 }}
           {{ end }}
-
-          volumes:
-          - name: config
-            configMap:
-              name: mysql-config
 
   volumeClaimTemplates:
   - metadata:
