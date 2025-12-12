@@ -1,0 +1,27 @@
+replicaCount: 3
+
+image:
+  repository: alpine
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3306
+  targetPort: 3306
+
+persistence:
+  enabled: true
+  size: 100Mi
+  storageClassName: "local-path"
+  mountPath: /data
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "250m"
+
+sqliteDb: /data/app.db
