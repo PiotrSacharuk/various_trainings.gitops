@@ -1,6 +1,7 @@
 # various-trainings.gitops
 
 nohup kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 follow https://github.com/PiotrSacharuk/ArgoCD scripts for argocd setup
 
