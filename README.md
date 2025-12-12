@@ -72,3 +72,29 @@ nohup kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -
 
 # Grafana (http://localhost:3000) - login: admin / <your-password>
 nohup kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring &
+
+
+# SEALED SECRETS
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm repo update
+
+helm install sealed-secrets sealed-secrets/sealed-secrets \
+  --namespace kube-system \
+  --set commandArgs="{--update-status}"
+
+kubectl rollout status deployment/sealed-secrets-sealed-secrets -n kube-system
+
+wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.24.0/kubeseal-0.24.0-linux-amd64.tar.gz
+tar xfz kubeseal-0.24.0-linux-amd64.tar.gz
+sudo mv kubeseal /usr/local/bin/
+
+kubectl get secret -n kube-system \
+  -l sealedsecrets.bitnami.com/status=active \
+  -o jsonpath='{.items[0].data.tls\.crt}' | base64 -d > sealing-key.pub
+
+# mysql-secret-plain.yaml is filled mysql-statefulset/templates/secret.yaml with values
+kubeseal -f mysql-secret-plain.yaml \
+  -w mysql-secret-sealed.yaml \
+  --scope namespace-wide \
+  --controller-name=sealed-secrets \
+  --controller-namespace=kube-system

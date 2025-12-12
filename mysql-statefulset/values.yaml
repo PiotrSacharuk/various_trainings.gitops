@@ -1,0 +1,30 @@
+mysql:
+  image: mysql
+  tag: 8.0
+  pullPolicy: IfNotPresent
+
+  replicas: 3
+
+  root-password: ""
+  database: "myapp_db"
+  username: ""
+  password: ""
+
+storage:
+  size: 1Gi
+  storageClassName: standard
+
+service:
+  type: ClusterIP
+  port: 3306
+
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 128m
+  limits:
+    memory: 256Mi
+    cpu: 512m
+
+nodeSelector: {}
+tolerations: []
