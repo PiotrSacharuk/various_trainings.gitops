@@ -7,7 +7,7 @@ mysql:
 
   rootPassword: "set-root-password"
   database: "myapp_db"
-  username: "set-username"
+  user: "set-username"
   password: "set-password"
 
 storage:

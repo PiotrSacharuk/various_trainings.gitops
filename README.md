@@ -101,7 +101,7 @@ metadata:
 type: Opaque
 stringData:
   root-password:
-  username:
+  user:
   password:
 
 
