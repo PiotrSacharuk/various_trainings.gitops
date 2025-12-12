@@ -92,7 +92,19 @@ kubectl get secret -n kube-system \
   -l sealedsecrets.bitnami.com/status=active \
   -o jsonpath='{.items[0].data.tls\.crt}' | base64 -d > sealing-key.pub
 
-# mysql-secret-plain.yaml is filled mysql-statefulset/templates/secret.yaml with values
+# mysql-secret-plain.yaml is filled following template with values
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+  namespace: mysql
+type: Opaque
+stringData:
+  root-password:
+  username:
+  password:
+
+
 kubeseal -f mysql-secret-plain.yaml \
   -w mysql-secret-sealed.yaml \
   --scope namespace-wide \
