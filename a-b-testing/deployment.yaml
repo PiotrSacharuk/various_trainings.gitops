@@ -1,0 +1,42 @@
+# Deployment A
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderflow-a
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: orderflow
+      version: a
+  template:
+    metadata:
+      labels:
+        app: orderflow
+        version: a
+    spec:
+      containers:
+      - name: orderflow
+        image: ghcr.io/piotrsacharuk/order-flow:0.1.0
+
+---
+# Deployment B
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderflow-b
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: orderflow
+      version: b
+  template:
+    metadata:
+      labels:
+        app: orderflow
+        version: b
+    spec:
+      containers:
+      - name: orderflow
+        image: ghcr.io/piotrsacharuk/order-flow:0.2.0

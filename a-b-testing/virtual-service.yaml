@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: orderflow
+spec:
+  hosts:
+  - orderflow.k3d.local
+  http:
+  # Route 1: 50% traffic to version A
+  - match:
+    - uri:
+        regex: ".*"
+    route:
+    - destination:
+        host: orderflow-a
+        port:
+          number: 5000
+      weight: 50
+    # Route 2: 50% traffic to version B
+    - destination:
+        host: orderflow-b
+        port:
+          number: 5000
+      weight: 50

@@ -1,0 +1,4 @@
+scrape_configs:
+- job_name: 'orderflow'
+  static_configs:
+  - targets: ['orderflow-a:5000', 'orderflow-b:5000']

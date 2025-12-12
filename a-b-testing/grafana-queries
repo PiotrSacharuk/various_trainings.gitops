@@ -1,0 +1,8 @@
+# Error rate by version
+rate(http_requests_total{status=~"5.."}[5m]) by (version)
+
+# Latency by version
+histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) by (version)
+
+# Conversion (custom metric)
+order_count_total by (version)
