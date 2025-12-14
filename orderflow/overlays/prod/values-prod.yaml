@@ -1,0 +1,25 @@
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+
+image:
+  tag: "0.2.0"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+env:
+  ENVIRONMENT: production
+
+ingress:
+  host: orderflow.prod.k3d.local
+
+monitoring:
+  enabled: true

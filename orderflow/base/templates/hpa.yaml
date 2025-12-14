@@ -1,3 +1,4 @@
+{{- if .Values.hpa.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -7,12 +8,13 @@ spec:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: {{ .Release.Name }}-orderflow
-  minReplicas: 2
-  maxReplicas: 10
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: {{ .Values.hpa.targetCPUUtilizationPercentage }}
+{{- end }}

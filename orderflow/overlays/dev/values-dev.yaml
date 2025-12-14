@@ -1,0 +1,22 @@
+hpa:
+  enabled: false
+
+image:
+  tag: "latest"
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  ENVIRONMENT: dev
+
+ingress:
+  host: orderflow.dev.k3d.local
+
+monitoring:
+  enabled: false
