@@ -5,6 +5,9 @@ metadata:
 spec:
   serviceName: sqlite
   replicas: {{ .Values.replicaCount }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
   selector:
     matchLabels:
       app: sqlite
