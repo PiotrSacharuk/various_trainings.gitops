@@ -9,6 +9,10 @@ spec:
     repoURL: https://github.com/PiotrSacharuk/various-trainings.gitops
     path: orderflow/overlays/prod
     targetRevision: HEAD
+    kustomize:
+      enabled: true
+    helm:
+      enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: orderflow
