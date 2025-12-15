@@ -7,6 +7,14 @@ hpa:
 image:
   tag: "0.2.0"
 
+strategy: canary
+canarySteps:
+  - setWeight: 20
+  - pause: {}
+  - setWeight: 50
+  - pause: {duration: 30s}
+  - setWeight: 100
+
 resources:
   requests:
     cpu: 200m

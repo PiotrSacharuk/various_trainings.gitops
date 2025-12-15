@@ -11,11 +11,7 @@ spec:
   strategy:
     canary:
       steps:
-      - setWeight: 20
-      - pause: {}
-      - setWeight: 50
-      - pause: {duration: 30s}
-      - setWeight: 100
+        {{- toYaml .Values.canarySteps | nindent 8 }}
   template:
     metadata:
       labels:

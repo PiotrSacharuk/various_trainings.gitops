@@ -12,6 +12,10 @@ image:
   pullPolicy: Always
   tag: "0.3.0"
 
+strategy: canary
+canarySteps:
+  - setWeight: 100
+
 service:
   name: orderflow
   type: ClusterIP
