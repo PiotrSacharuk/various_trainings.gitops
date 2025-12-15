@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: orderflow-app-staging
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/PiotrSacharuk/various-trainings.gitops
+    path: orderflow
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - overlays/staging/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: orderflow-staging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

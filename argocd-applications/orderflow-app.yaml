@@ -7,12 +7,11 @@ spec:
   project: default
   source:
     repoURL: https://github.com/PiotrSacharuk/various-trainings.gitops
-    path: orderflow/overlays/prod
+    path: orderflow
     targetRevision: HEAD
-    kustomize:
-      enabled: true
     helm:
-      enabled: true
+      valueFiles:
+        - overlays/prod/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: orderflow
