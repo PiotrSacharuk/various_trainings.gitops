@@ -1,10 +1,12 @@
-# various-trainings.gitops
+# various-trainings.gitops USEFUL COMMANDS
 
+```
 nohup kubectl port-forward svc/argocd-server -n argocd 8080:443 &
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-
+```
 follow https://github.com/PiotrSacharuk/ArgoCD scripts for argocd setup
 
+```
 kubectl create secret docker-registry ghcr-secret \
   --docker-server=ghcr.io \
   --docker-username=*** \
@@ -13,9 +15,10 @@ kubectl create secret docker-registry ghcr-secret \
 
 kubectl create namespace argo-rollouts
 kubectl apply -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml -n argo-rollouts
-
+```
 
 # MANIFEST
+```
 project: default
 source:
   repoURL: https://github.com/PiotrSacharuk/various-trainings.gitops
@@ -30,8 +33,10 @@ syncPolicy:
     selfHeal: true
   syncOptions:
     - CreateNamespace=true
+```
 
 # INGRESS
+```
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
@@ -39,9 +44,10 @@ helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
   --set installCRDs=true
-
+```
 
 # PROMETHEUS
+```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
@@ -54,8 +60,15 @@ helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
   --create-namespace \
   -f monitoring/prometheus-values.yaml \
   --set grafana.adminPassword=<set your password here>
+```
+
+## Prometheus (http://localhost:9090)
+```
+nohup kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n monitoring &
+```
 
 # GRAFANA LOKI + Promtail
+```
 sudo sysctl -w fs.inotify.max_user_watches=524288
 sudo sysctl -w fs.inotify.max_user_instances=8192
 helm repo add grafana https://grafana.github.io/helm-charts
@@ -65,17 +78,15 @@ helm upgrade --install loki grafana/loki-stack \
   -n monitoring \
   --set loki.enabled=true \
   -f monitoring/promtail-values.yaml
+```
 
-# ACCESS
-
-# Prometheus (http://localhost:9090)
-nohup kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n monitoring &
-
-# Grafana (http://localhost:3000) - login: admin / <your-password>
+## Grafana (http://localhost:3000) - login: admin / <your-password>
+```
 nohup kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring &
-
+```
 
 # SEALED SECRETS
+```
 helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
 helm repo update
 
@@ -92,8 +103,10 @@ sudo mv kubeseal /usr/local/bin/
 kubectl get secret -n kube-system \
   -l sealedsecrets.bitnami.com/status=active \
   -o jsonpath='{.items[0].data.tls\.crt}' | base64 -d > sealing-key.pub
+```
 
-# mysql-secret-plain.yaml is filled following template with values
+## mysql-secret-plain.yaml is filled following template with values
+```
 apiVersion: v1
 kind: Secret
 metadata:
@@ -104,10 +117,11 @@ stringData:
   root-password:
   user:
   password:
-
-
+```
+```
 kubeseal -f mysql-secret-plain.yaml \
   -w mysql-secret-sealed.yaml \
   --scope namespace-wide \
   --controller-name=sealed-secrets \
   --controller-namespace=kube-system
+```
