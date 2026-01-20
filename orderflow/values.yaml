@@ -10,7 +10,7 @@ imagePullSecrets:
 image:
   repository: ghcr.io/piotrsacharuk/order-flow
   pullPolicy: Always
-  tag: "0.3.0"
+  tag: "0.3.1"
 
 strategy: canary
 canarySteps:
